@@ -1,0 +1,1118 @@
+{
+  "categories": [
+    {
+      "slug": "clothing",
+      "name": "Clothing",
+      "description": "Easy, well-cut everyday pieces in natural fabrics.",
+      "imageUrl": "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&h=1100&q=82",
+      "highlights": [
+        "Pre-washed for a soft hand-feel",
+        "Machine washable at 30°C",
+        "Cut to a true-to-size fit"
+      ],
+      "sortOrder": 0
+    },
+    {
+      "slug": "beauty",
+      "name": "Beauty",
+      "description": "Skincare, colour and haircare that earn a place in your routine.",
+      "imageUrl": "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=900&h=1100&q=82",
+      "highlights": [
+        "Dermatologist tested",
+        "Cruelty-free formulas",
+        "Free from parabens and sulphates"
+      ],
+      "sortOrder": 1
+    },
+    {
+      "slug": "electronics",
+      "name": "Electronics",
+      "description": "Dependable gadgets and accessories for work, travel and home.",
+      "imageUrl": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&h=1100&q=82",
+      "highlights": [
+        "12-month manufacturer warranty",
+        "Includes cable and quick-start guide",
+        "Tested before dispatch"
+      ],
+      "sortOrder": 2
+    },
+    {
+      "slug": "home-living",
+      "name": "Home & Living",
+      "description": "Calm, considered pieces for every room.",
+      "imageUrl": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&h=1100&q=82",
+      "highlights": [
+        "Made from durable, natural materials",
+        "Easy to clean and care for",
+        "Packed to arrive safely"
+      ],
+      "sortOrder": 3
+    },
+    {
+      "slug": "accessories",
+      "name": "Accessories",
+      "description": "Bags, eyewear, watches and the small things that finish a look.",
+      "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&h=1100&q=82",
+      "highlights": [
+        "Hardwearing materials",
+        "Designed to age well",
+        "Gift-ready packaging"
+      ],
+      "sortOrder": 4
+    }
+  ],
+  "products": [
+    {
+      "name": "Relaxed Linen Shirt",
+      "brand": "Alder & Co",
+      "category": "clothing",
+      "price": 2400,
+      "rating": 4.6,
+      "reviewCount": 128,
+      "stock": 24,
+      "badge": "New",
+      "description": "A breathable, softly structured shirt in washed European linen. Wear it buttoned up or open over a tee.",
+      "imageUrl": "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-CLO-001",
+      "specs": [
+        [
+          "Material",
+          "100% European linen"
+        ],
+        [
+          "Fit",
+          "Relaxed"
+        ],
+        [
+          "Sizes",
+          "S to XXL"
+        ],
+        [
+          "Care",
+          "Machine wash cold"
+        ]
+      ],
+      "slug": "relaxed-linen-shirt",
+      "images": [
+        "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Heavyweight Cotton Tee",
+      "brand": "Alder & Co",
+      "category": "clothing",
+      "price": 1400,
+      "rating": 4.8,
+      "reviewCount": 412,
+      "stock": 60,
+      "badge": "Bestseller",
+      "description": "A dense 220gsm tee that holds its shape wash after wash, with a clean crew neckline.",
+      "imageUrl": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-CLO-002",
+      "specs": [
+        [
+          "Material",
+          "100% combed cotton, 220gsm"
+        ],
+        [
+          "Fit",
+          "Regular"
+        ],
+        [
+          "Neckline",
+          "Crew"
+        ],
+        [
+          "Care",
+          "Machine wash at 30°C"
+        ]
+      ],
+      "slug": "heavyweight-cotton-tee",
+      "images": [
+        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Straight-Leg Denim",
+      "brand": "Northfold",
+      "category": "clothing",
+      "price": 3950,
+      "compareAtPrice": 4900,
+      "rating": 4.5,
+      "reviewCount": 203,
+      "stock": 18,
+      "badge": "Sale",
+      "description": "Mid-rise jeans with a roomy straight leg and a little stretch for all-day comfort.",
+      "imageUrl": "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-CLO-003",
+      "specs": [
+        [
+          "Material",
+          "98% cotton, 2% elastane"
+        ],
+        [
+          "Fit",
+          "Straight leg, mid rise"
+        ],
+        [
+          "Sizes",
+          "28 to 38"
+        ],
+        [
+          "Care",
+          "Wash inside out"
+        ]
+      ],
+      "slug": "straight-leg-denim",
+      "images": [
+        "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Merino Crew Sweater",
+      "brand": "Northfold",
+      "category": "clothing",
+      "price": 4750,
+      "rating": 4.7,
+      "reviewCount": 87,
+      "stock": 9,
+      "description": "Fine-gauge merino that is warm without bulk. Naturally temperature regulating and odour resistant.",
+      "imageUrl": "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-CLO-004",
+      "specs": [
+        [
+          "Material",
+          "100% merino wool"
+        ],
+        [
+          "Knit",
+          "Fine gauge"
+        ],
+        [
+          "Fit",
+          "Regular"
+        ],
+        [
+          "Care",
+          "Hand wash or wool cycle"
+        ]
+      ],
+      "slug": "merino-crew-sweater",
+      "images": [
+        "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Quilted Utility Jacket",
+      "brand": "Fieldwork",
+      "category": "clothing",
+      "price": 6450,
+      "rating": 4.4,
+      "reviewCount": 56,
+      "stock": 5,
+      "description": "A light quilted jacket with four roomy pockets, ideal for the in-between seasons.",
+      "imageUrl": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-CLO-005",
+      "specs": [
+        [
+          "Shell",
+          "Recycled polyester"
+        ],
+        [
+          "Filling",
+          "Lightweight polyfill"
+        ],
+        [
+          "Pockets",
+          "Four"
+        ],
+        [
+          "Care",
+          "Machine wash cold"
+        ]
+      ],
+      "slug": "quilted-utility-jacket",
+      "images": [
+        "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Pleated Midi Skirt",
+      "brand": "Alder & Co",
+      "category": "clothing",
+      "price": 2950,
+      "rating": 4.3,
+      "reviewCount": 71,
+      "stock": 14,
+      "description": "Fluid knife pleats and an elasticated back waist for a flattering, easy fit.",
+      "imageUrl": "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-CLO-006",
+      "specs": [
+        [
+          "Material",
+          "Polyester crepe"
+        ],
+        [
+          "Length",
+          "Midi"
+        ],
+        [
+          "Waist",
+          "Elasticated back"
+        ],
+        [
+          "Care",
+          "Machine wash cold"
+        ]
+      ],
+      "slug": "pleated-midi-skirt",
+      "images": [
+        "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Daily Mineral Sunscreen SPF 40",
+      "brand": "Solenne",
+      "category": "beauty",
+      "price": 1200,
+      "rating": 4.7,
+      "reviewCount": 530,
+      "stock": 80,
+      "badge": "Bestseller",
+      "description": "A lightweight, non-greasy mineral sunscreen that sits well under makeup and leaves no white cast.",
+      "imageUrl": "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-BEA-001",
+      "specs": [
+        [
+          "Size",
+          "50 ml"
+        ],
+        [
+          "Protection",
+          "SPF 40, broad spectrum"
+        ],
+        [
+          "Skin type",
+          "All skin types"
+        ],
+        [
+          "Finish",
+          "Natural, no white cast"
+        ]
+      ],
+      "slug": "daily-mineral-sunscreen-spf-40",
+      "images": [
+        "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Hydrating Face Serum",
+      "brand": "Solenne",
+      "category": "beauty",
+      "price": 1800,
+      "rating": 4.6,
+      "reviewCount": 318,
+      "stock": 40,
+      "description": "Hyaluronic acid and niacinamide to plump, smooth and even out skin tone.",
+      "imageUrl": "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-BEA-002",
+      "specs": [
+        [
+          "Size",
+          "30 ml"
+        ],
+        [
+          "Key ingredients",
+          "Hyaluronic acid, niacinamide"
+        ],
+        [
+          "Skin type",
+          "All skin types"
+        ],
+        [
+          "Use",
+          "Morning and night"
+        ]
+      ],
+      "slug": "hydrating-face-serum",
+      "images": [
+        "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Clay Detox Mask",
+      "brand": "Verde Botanics",
+      "category": "beauty",
+      "price": 1100,
+      "compareAtPrice": 1400,
+      "rating": 4.4,
+      "reviewCount": 142,
+      "stock": 33,
+      "badge": "Sale",
+      "description": "A kaolin and green tea mask that draws out impurities without over-drying.",
+      "imageUrl": "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-BEA-003",
+      "specs": [
+        [
+          "Size",
+          "100 ml"
+        ],
+        [
+          "Key ingredients",
+          "Kaolin clay, green tea"
+        ],
+        [
+          "Skin type",
+          "Oily, combination"
+        ],
+        [
+          "Use",
+          "1 to 2 times a week"
+        ]
+      ],
+      "slug": "clay-detox-mask",
+      "images": [
+        "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Soft Matte Lip Colour",
+      "brand": "Maison Rouge",
+      "category": "beauty",
+      "price": 900,
+      "rating": 4.5,
+      "reviewCount": 260,
+      "stock": 70,
+      "description": "A comfortable, velvety matte with rich pigment that lasts through the day.",
+      "imageUrl": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-BEA-004",
+      "specs": [
+        [
+          "Finish",
+          "Soft matte"
+        ],
+        [
+          "Weight",
+          "3.5 g"
+        ],
+        [
+          "Wear time",
+          "Up to 8 hours"
+        ],
+        [
+          "Formula",
+          "Cruelty-free"
+        ]
+      ],
+      "slug": "soft-matte-lip-colour",
+      "images": [
+        "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Argan Repair Hair Oil",
+      "brand": "Verde Botanics",
+      "category": "beauty",
+      "price": 1450,
+      "rating": 4.6,
+      "reviewCount": 190,
+      "stock": 3,
+      "description": "A fast-absorbing oil that tames frizz and adds shine without weighing hair down.",
+      "imageUrl": "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-BEA-005",
+      "specs": [
+        [
+          "Size",
+          "100 ml"
+        ],
+        [
+          "Key ingredient",
+          "Argan oil"
+        ],
+        [
+          "Hair type",
+          "All hair types"
+        ],
+        [
+          "Use",
+          "On damp or dry hair"
+        ]
+      ],
+      "slug": "argan-repair-hair-oil",
+      "images": [
+        "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Vitamin C Night Cream",
+      "brand": "Solenne",
+      "category": "beauty",
+      "price": 2100,
+      "rating": 4.5,
+      "reviewCount": 99,
+      "stock": 22,
+      "badge": "New",
+      "description": "A rich overnight cream that brightens and supports skin while you sleep.",
+      "imageUrl": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-BEA-006",
+      "specs": [
+        [
+          "Size",
+          "50 ml"
+        ],
+        [
+          "Key ingredients",
+          "Vitamin C, peptides"
+        ],
+        [
+          "Skin type",
+          "Normal to dry"
+        ],
+        [
+          "Use",
+          "Evening"
+        ]
+      ],
+      "slug": "vitamin-c-night-cream",
+      "images": [
+        "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Wireless Noise-Cancelling Headphones",
+      "brand": "Auralis",
+      "category": "electronics",
+      "price": 9450,
+      "compareAtPrice": 11450,
+      "rating": 4.6,
+      "reviewCount": 840,
+      "stock": 15,
+      "badge": "Sale",
+      "description": "Adaptive noise cancelling, 40-hour battery life and plush memory-foam ear cushions.",
+      "imageUrl": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-ELE-001",
+      "specs": [
+        [
+          "Battery life",
+          "Up to 40 hours"
+        ],
+        [
+          "Connectivity",
+          "Bluetooth 5.3"
+        ],
+        [
+          "Noise cancelling",
+          "Adaptive ANC"
+        ],
+        [
+          "Charging",
+          "USB-C"
+        ],
+        [
+          "Warranty",
+          "12 months"
+        ]
+      ],
+      "slug": "wireless-noise-cancelling-headphones",
+      "images": [
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Compact Bluetooth Speaker",
+      "brand": "Auralis",
+      "category": "electronics",
+      "price": 2950,
+      "rating": 4.5,
+      "reviewCount": 612,
+      "stock": 44,
+      "badge": "Bestseller",
+      "description": "Surprisingly full sound from a pocketable, splash-proof speaker with 14 hours of playtime.",
+      "imageUrl": "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-ELE-002",
+      "specs": [
+        [
+          "Playtime",
+          "Up to 14 hours"
+        ],
+        [
+          "Water resistance",
+          "IPX5"
+        ],
+        [
+          "Connectivity",
+          "Bluetooth 5.3"
+        ],
+        [
+          "Charging",
+          "USB-C"
+        ],
+        [
+          "Warranty",
+          "12 months"
+        ]
+      ],
+      "slug": "compact-bluetooth-speaker",
+      "images": [
+        "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Fast-Charge Power Bank 20,000 mAh",
+      "brand": "Voltix",
+      "category": "electronics",
+      "price": 1950,
+      "rating": 4.7,
+      "reviewCount": 455,
+      "stock": 52,
+      "description": "Charges a phone up to four times, with 45W USB-C output that also powers most laptops.",
+      "imageUrl": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-ELE-003",
+      "specs": [
+        [
+          "Capacity",
+          "20,000 mAh"
+        ],
+        [
+          "Output",
+          "45W USB-C PD"
+        ],
+        [
+          "Ports",
+          "2x USB-C, 1x USB-A"
+        ],
+        [
+          "Warranty",
+          "12 months"
+        ]
+      ],
+      "slug": "fast-charge-power-bank-20-000-mah",
+      "images": [
+        "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Low-Profile Mechanical Keyboard",
+      "brand": "Typewell",
+      "category": "electronics",
+      "price": 5950,
+      "rating": 4.6,
+      "reviewCount": 133,
+      "stock": 12,
+      "badge": "New",
+      "description": "Quiet tactile switches, multi-device Bluetooth and a slim aluminium frame.",
+      "imageUrl": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-ELE-004",
+      "specs": [
+        [
+          "Switches",
+          "Low-profile tactile"
+        ],
+        [
+          "Connectivity",
+          "Bluetooth 5.1 and USB-C"
+        ],
+        [
+          "Layout",
+          "ANSI 75%"
+        ],
+        [
+          "Battery",
+          "Up to 3 months"
+        ],
+        [
+          "Warranty",
+          "12 months"
+        ]
+      ],
+      "slug": "low-profile-mechanical-keyboard",
+      "images": [
+        "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Smartwatch Fit Series 4",
+      "brand": "Pulsar",
+      "category": "electronics",
+      "price": 7450,
+      "rating": 4.2,
+      "reviewCount": 304,
+      "stock": 0,
+      "description": "Heart-rate, sleep and workout tracking with a bright AMOLED display and 7-day battery.",
+      "imageUrl": "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-ELE-005",
+      "specs": [
+        [
+          "Display",
+          "1.43 inch AMOLED"
+        ],
+        [
+          "Battery",
+          "Up to 7 days"
+        ],
+        [
+          "Water resistance",
+          "5 ATM"
+        ],
+        [
+          "Sensors",
+          "Heart rate, SpO2, sleep"
+        ],
+        [
+          "Warranty",
+          "12 months"
+        ]
+      ],
+      "slug": "smartwatch-fit-series-4",
+      "images": [
+        "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "USB-C Multiport Hub",
+      "brand": "Voltix",
+      "category": "electronics",
+      "price": 2250,
+      "rating": 4.4,
+      "reviewCount": 220,
+      "stock": 31,
+      "description": "HDMI 4K, SD reader, two USB-A ports and 100W pass-through charging in one small hub.",
+      "imageUrl": "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-ELE-006",
+      "specs": [
+        [
+          "Ports",
+          "HDMI 4K, 2x USB-A, SD, USB-C PD"
+        ],
+        [
+          "Pass-through charging",
+          "Up to 100W"
+        ],
+        [
+          "Material",
+          "Aluminium"
+        ],
+        [
+          "Warranty",
+          "12 months"
+        ]
+      ],
+      "slug": "usb-c-multiport-hub",
+      "images": [
+        "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Stoneware Dinner Set, 12 Piece",
+      "brand": "Hearth & Hand",
+      "category": "home-living",
+      "price": 4200,
+      "rating": 4.6,
+      "reviewCount": 98,
+      "stock": 10,
+      "description": "A reactive-glaze stoneware set for four. Dishwasher and microwave safe.",
+      "imageUrl": "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-HOM-001",
+      "specs": [
+        [
+          "Pieces",
+          "12 (4 dinner, 4 side, 4 bowls)"
+        ],
+        [
+          "Material",
+          "Stoneware"
+        ],
+        [
+          "Finish",
+          "Reactive glaze"
+        ],
+        [
+          "Care",
+          "Dishwasher and microwave safe"
+        ]
+      ],
+      "slug": "stoneware-dinner-set-12-piece",
+      "images": [
+        "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Soy Candle, Cedar & Fig",
+      "brand": "Hearth & Hand",
+      "category": "home-living",
+      "price": 1300,
+      "rating": 4.8,
+      "reviewCount": 376,
+      "stock": 55,
+      "badge": "Bestseller",
+      "description": "Hand-poured soy wax with a warm woody-green scent and a 45-hour burn time.",
+      "imageUrl": "https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-HOM-002",
+      "specs": [
+        [
+          "Wax",
+          "Soy"
+        ],
+        [
+          "Burn time",
+          "About 45 hours"
+        ],
+        [
+          "Weight",
+          "220 g"
+        ],
+        [
+          "Scent",
+          "Cedar and fig"
+        ]
+      ],
+      "slug": "soy-candle-cedar-and-fig",
+      "images": [
+        "https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Washed Linen Duvet Cover",
+      "brand": "Slumber Lane",
+      "category": "home-living",
+      "price": 5500,
+      "compareAtPrice": 6750,
+      "rating": 4.5,
+      "reviewCount": 77,
+      "stock": 8,
+      "badge": "Sale",
+      "description": "Pre-washed European flax linen that gets softer with every wash. Pillowcases included.",
+      "imageUrl": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-HOM-003",
+      "specs": [
+        [
+          "Material",
+          "100% washed linen"
+        ],
+        [
+          "Includes",
+          "Duvet cover and 2 pillowcases"
+        ],
+        [
+          "Sizes",
+          "Double, King"
+        ],
+        [
+          "Care",
+          "Machine wash at 40°C"
+        ]
+      ],
+      "slug": "washed-linen-duvet-cover",
+      "images": [
+        "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Ceramic Table Lamp",
+      "brand": "Lumen Studio",
+      "category": "home-living",
+      "price": 3400,
+      "rating": 4.4,
+      "reviewCount": 61,
+      "stock": 17,
+      "description": "A sculptural ceramic base with a pleated linen shade for a soft, diffused glow.",
+      "imageUrl": "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-HOM-004",
+      "specs": [
+        [
+          "Height",
+          "45 cm"
+        ],
+        [
+          "Material",
+          "Ceramic base, linen shade"
+        ],
+        [
+          "Bulb",
+          "E27, up to 40W (not included)"
+        ],
+        [
+          "Cable",
+          "1.8 m"
+        ]
+      ],
+      "slug": "ceramic-table-lamp",
+      "images": [
+        "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Woven Storage Basket",
+      "brand": "Hearth & Hand",
+      "category": "home-living",
+      "price": 1700,
+      "rating": 4.5,
+      "reviewCount": 143,
+      "stock": 28,
+      "description": "Hand-woven seagrass with sturdy handles. Perfect for throws, toys or laundry.",
+      "imageUrl": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-HOM-005",
+      "specs": [
+        [
+          "Material",
+          "Seagrass"
+        ],
+        [
+          "Dimensions",
+          "38 x 30 cm"
+        ],
+        [
+          "Handles",
+          "Yes"
+        ],
+        [
+          "Care",
+          "Wipe clean"
+        ]
+      ],
+      "slug": "woven-storage-basket",
+      "images": [
+        "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Waffle Bath Towel Set",
+      "brand": "Slumber Lane",
+      "category": "home-living",
+      "price": 2600,
+      "rating": 4.7,
+      "reviewCount": 205,
+      "stock": 36,
+      "badge": "New",
+      "description": "Three quick-drying waffle-weave cotton towels: bath, hand and face.",
+      "imageUrl": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-HOM-006",
+      "specs": [
+        [
+          "Pieces",
+          "3 (bath, hand, face)"
+        ],
+        [
+          "Material",
+          "100% cotton waffle"
+        ],
+        [
+          "Weight",
+          "380 gsm"
+        ],
+        [
+          "Care",
+          "Machine wash at 40°C"
+        ]
+      ],
+      "slug": "waffle-bath-towel-set",
+      "images": [
+        "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Leather Card Holder",
+      "brand": "Fieldwork",
+      "category": "accessories",
+      "price": 1600,
+      "rating": 4.6,
+      "reviewCount": 288,
+      "stock": 40,
+      "description": "Vegetable-tanned leather with room for six cards and folded notes. Develops a patina over time.",
+      "imageUrl": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-ACC-001",
+      "specs": [
+        [
+          "Material",
+          "Vegetable-tanned leather"
+        ],
+        [
+          "Capacity",
+          "6 cards and folded notes"
+        ],
+        [
+          "Dimensions",
+          "10 x 7 cm"
+        ]
+      ],
+      "slug": "leather-card-holder",
+      "images": [
+        "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Canvas Weekender Bag",
+      "brand": "Fieldwork",
+      "category": "accessories",
+      "price": 4400,
+      "rating": 4.5,
+      "reviewCount": 94,
+      "stock": 11,
+      "description": "Waxed canvas with leather trims, a zip-through main compartment and a detachable strap.",
+      "imageUrl": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-ACC-002",
+      "specs": [
+        [
+          "Material",
+          "Waxed canvas, leather trims"
+        ],
+        [
+          "Capacity",
+          "35 L"
+        ],
+        [
+          "Strap",
+          "Detachable"
+        ],
+        [
+          "Closure",
+          "Zip"
+        ]
+      ],
+      "slug": "canvas-weekender-bag",
+      "images": [
+        "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Polarised Aviator Sunglasses",
+      "brand": "Coastline",
+      "category": "accessories",
+      "price": 2700,
+      "compareAtPrice": 3400,
+      "rating": 4.3,
+      "reviewCount": 117,
+      "stock": 20,
+      "badge": "Sale",
+      "description": "Lightweight metal frames with polarised, UV400 lenses for glare-free clarity.",
+      "imageUrl": "https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-ACC-003",
+      "specs": [
+        [
+          "Frame",
+          "Metal"
+        ],
+        [
+          "Lenses",
+          "Polarised, UV400"
+        ],
+        [
+          "Fit",
+          "Medium"
+        ],
+        [
+          "Includes",
+          "Case and cleaning cloth"
+        ]
+      ],
+      "slug": "polarised-aviator-sunglasses",
+      "images": [
+        "https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Minimal Steel Watch",
+      "brand": "Pulsar",
+      "category": "accessories",
+      "price": 4950,
+      "rating": 4.6,
+      "reviewCount": 162,
+      "stock": 14,
+      "badge": "New",
+      "description": "A 38mm brushed steel case, sapphire-coated glass and a quick-release strap.",
+      "imageUrl": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-ACC-004",
+      "specs": [
+        [
+          "Case",
+          "38 mm brushed steel"
+        ],
+        [
+          "Glass",
+          "Sapphire-coated"
+        ],
+        [
+          "Strap",
+          "Quick-release"
+        ],
+        [
+          "Water resistance",
+          "3 ATM"
+        ]
+      ],
+      "slug": "minimal-steel-watch",
+      "images": [
+        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Ribbed Wool Beanie",
+      "brand": "Northfold",
+      "category": "accessories",
+      "price": 1200,
+      "rating": 4.7,
+      "reviewCount": 241,
+      "stock": 45,
+      "description": "A snug, double-layered beanie in soft lambswool.",
+      "imageUrl": "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-ACC-005",
+      "specs": [
+        [
+          "Material",
+          "Lambswool"
+        ],
+        [
+          "Construction",
+          "Double-layer rib knit"
+        ],
+        [
+          "Fit",
+          "One size"
+        ],
+        [
+          "Care",
+          "Hand wash"
+        ]
+      ],
+      "slug": "ribbed-wool-beanie",
+      "images": [
+        "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    },
+    {
+      "name": "Everyday Canvas Tote",
+      "brand": "Alder & Co",
+      "category": "accessories",
+      "price": 2250,
+      "rating": 4.5,
+      "reviewCount": 178,
+      "stock": 26,
+      "badge": "Bestseller",
+      "description": "A roomy organic cotton tote with an inner zip pocket and reinforced handles.",
+      "imageUrl": "https://images.unsplash.com/photo-1622560480654-d96214fdc887?auto=format&fit=crop&w=900&h=1100&q=82",
+      "sku": "KM-ACC-006",
+      "specs": [
+        [
+          "Material",
+          "Organic cotton canvas"
+        ],
+        [
+          "Dimensions",
+          "40 x 38 cm"
+        ],
+        [
+          "Pocket",
+          "Inner zip pocket"
+        ],
+        [
+          "Handles",
+          "Reinforced"
+        ]
+      ],
+      "slug": "everyday-canvas-tote",
+      "images": [
+        "https://images.unsplash.com/photo-1622560480654-d96214fdc887?auto=format&fit=crop&w=900&h=1100&q=82"
+      ]
+    }
+  ]
+}
