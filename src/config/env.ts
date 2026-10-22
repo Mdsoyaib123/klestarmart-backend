@@ -5,6 +5,9 @@ import { z } from 'zod'
 // Tests set their own environment; everything else reads .env.
 if (process.env.NODE_ENV !== 'test') dotenv.config({ quiet: true })
 
+// The deployed storefront and dashboard.
+const LIVE_ORIGINS = ['https://klestarmart.netlify.app', 'https://klestarmartdashboard.netlify.app']
+
 const url = z.url({ protocol: /^https?$/ }).transform((value) => value.replace(/\/$/, ''))
 // One or more addresses separated by commas, e.g. the local dev server and the live site.
 const urlList = (fallback: string) =>
@@ -51,7 +54,8 @@ export const env = {
   port: vars.PORT,
   mongodbUri: vars.MONGODB_URI ?? 'mongodb://127.0.0.1:27017/klestarmart',
   // Browsers on these origins (storefront and dashboard addresses) may call the API with cookies.
-  allowedOrigins: [...vars.CLIENT_URL, ...vars.DASHBOARD_URL],
+  // The live Netlify sites are always allowed, whatever the host's environment says.
+  allowedOrigins: [...new Set([...vars.CLIENT_URL, ...vars.DASHBOARD_URL, ...LIVE_ORIGINS])],
   // Public address of this API, used to build absolute URLs for uploaded images.
   publicUrl: vars.API_PUBLIC_URL ?? `http://localhost:${vars.PORT}`,
   jwtSecret: vars.JWT_SECRET ?? randomBytes(48).toString('hex'),
