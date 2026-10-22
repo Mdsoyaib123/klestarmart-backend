@@ -5,7 +5,14 @@ export const paginationQuery = z.object({
   limit: z.coerce.number().int().min(1).max(100).default(20),
 })
 
-export const pageMeta = (page: number, limit: number, total: number) => ({
+export interface PageMeta {
+  page: number
+  limit: number
+  total: number
+  pages: number
+}
+
+export const pageMeta = (page: number, limit: number, total: number): PageMeta => ({
   page,
   limit,
   total,
@@ -15,4 +22,8 @@ export const pageMeta = (page: number, limit: number, total: number) => ({
 // Escapes user input for use inside a RegExp search.
 export const escapeRegex = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
-export const searchRegex = (value?: string) => (value ? new RegExp(escapeRegex(value.trim()), 'i') : undefined)
+// Case-insensitive "contains" match, capped in length so a search cannot become an expensive pattern.
+export const searchRegex = (value?: string) => {
+  const term = value?.trim().slice(0, 100)
+  return term ? new RegExp(escapeRegex(term), 'i') : undefined
+}

@@ -1,5 +1,5 @@
 import { isValidObjectId, type SortOrder } from 'mongoose'
-import { AppError, notFound } from '@/lib/AppError'
+import { badRequest, notFound } from '@/lib/AppError'
 import { pageMeta, searchRegex } from '@/lib/pagination'
 import { slugify } from '@/lib/slug'
 import CategoryModel from '@/modules/category/category.model'
@@ -10,11 +10,14 @@ import type { adminListQuery } from '@/modules/product/product.validation'
 
 export const LOW_STOCK = 5
 
+// Fields kept out of storefront responses: sales figures are business data.
+const PUBLIC_PROJECTION = '-soldCount'
+
 // Storefront: every active product. The catalogue is small enough to filter on the client.
-export const listActive = () => ProductModel.find({ status: 'active' }).sort({ createdAt: -1 }).limit(1000)
+export const listActive = () => ProductModel.find({ status: 'active' }).select(PUBLIC_PROJECTION).sort({ createdAt: -1 }).limit(1000)
 
 export const findActive = (idOrSlug: string) =>
-  ProductModel.findOne({ status: 'active', ...(isValidObjectId(idOrSlug) ? { _id: idOrSlug } : { slug: idOrSlug }) })
+  ProductModel.findOne({ status: 'active', ...(isValidObjectId(idOrSlug) ? { _id: idOrSlug } : { slug: idOrSlug.toLowerCase() }) }).select(PUBLIC_PROJECTION)
 
 export const listAdmin = async (query: z.infer<typeof adminListQuery>) => {
   const filter: Record<string, unknown> = {}
@@ -53,10 +56,15 @@ const uniqueSlug = async (base: string, excludeId?: string) => {
   }
 }
 
-const toDocument = async (input: ProductInput, excludeId?: string) => {
-  if (!(await CategoryModel.exists({ slug: input.category }))) throw new AppError(400, 'Choose an existing category')
+const toDocument = async ({ stock, ...input }: ProductInput, excludeId?: string) => {
+  if (!(await CategoryModel.exists({ slug: input.category }))) {
+    throw badRequest('Choose an existing category', { code: 'VALIDATION_ERROR', errors: [{ field: 'category', message: 'This category does not exist' }] })
+  }
   return {
     ...input,
+    // Opening stock is set once, on create. After that, stock only changes through orders and the
+    // stock-adjust endpoint; writing a number the editor loaded earlier would undo sales made since.
+    ...(excludeId ? {} : { stock: stock ?? 0 }),
     slug: await uniqueSlug(input.slug ?? input.name, excludeId),
     // The first image is the main one shown on product cards.
     imageUrl: input.images[0] ?? null,
@@ -67,8 +75,10 @@ const toDocument = async (input: ProductInput, excludeId?: string) => {
 export const create = async (input: ProductInput) => ProductModel.create(await toDocument(input))
 
 export const update = async (id: string, input: ProductInput) => {
-  if (!isValidObjectId(id) || !(await ProductModel.exists({ _id: id }))) throw notFound('Product')
-  return ProductModel.findByIdAndUpdate(id, await toDocument(input, id), { returnDocument: 'after', runValidators: true })
+  if (!(await ProductModel.exists({ _id: id }))) throw notFound('Product')
+  const product = await ProductModel.findByIdAndUpdate(id, await toDocument(input, id), { returnDocument: 'after', runValidators: true })
+  if (!product) throw notFound('Product')
+  return product
 }
 
 export const adjustStock = async (id: string, change: number) => {
@@ -77,6 +87,7 @@ export const adjustStock = async (id: string, change: number) => {
     { $inc: { stock: change } },
     { returnDocument: 'after' },
   )
-  if (!product) throw new AppError(400, 'Stock cannot go below zero')
-  return product
+  if (product) return product
+  if (!(await ProductModel.exists({ _id: id }))) throw notFound('Product')
+  throw badRequest('Stock cannot go below zero', { code: 'VALIDATION_ERROR', errors: [{ field: 'change', message: 'Not enough stock to remove' }] })
 }

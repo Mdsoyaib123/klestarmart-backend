@@ -16,3 +16,7 @@ export const phoneSchema = z
 // Optional text fields: blank strings become undefined so sparse unique indexes keep working.
 export const optionalText = <T extends z.ZodType>(schema: T) =>
   z.preprocess((value) => (typeof value === 'string' && value.trim() === '' ? undefined : value), schema.optional())
+
+// Web addresses must be http(s): z.url() on its own also accepts javascript: and data: links,
+// which would let a banner link or image URL run script in the storefront.
+export const httpUrl = () => z.url({ protocol: /^https?$/, message: 'Enter a full web address starting with https://' })

@@ -1,6 +1,7 @@
 import { z } from 'zod'
+import { httpUrl } from '@/lib/phone'
 
-const url = z.union([z.url(), z.literal('')])
+const url = z.union([httpUrl(), z.literal('')])
 const rate = z
   .object({
     fee: z.coerce.number().min(0).max(100_000),
@@ -24,7 +25,12 @@ export const settingsSchema = z.object({
     dhaka: rate,
     outside: rate,
     freeShippingThreshold: z.coerce.number().min(0).max(10_000_000),
-    insideDhakaDistricts: z.array(z.string().trim().min(1)).min(1),
+    // Deduplicated, so a district typed twice is stored once.
+    insideDhakaDistricts: z
+      .array(z.string().trim().min(1).max(40))
+      .min(1, 'List at least one district')
+      .max(64)
+      .transform((list) => [...new Set(list)]),
   }),
   returnDays: z.coerce.number().int().min(0).max(365),
   seo: z.object({ metaDescription: z.string().trim().max(300) }),

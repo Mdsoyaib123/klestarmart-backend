@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { storeDate } from '@/lib/dates'
 import { paginationQuery } from '@/lib/pagination'
 import { optionalText, phoneSchema } from '@/lib/phone'
 import { ORDER_STATUSES, PAYMENT_METHODS, PAYMENT_STATUSES } from '@/modules/order/order.model'
@@ -16,7 +17,12 @@ export const checkoutSchema = z.object({
     note: optionalText(z.string().trim().max(300)),
   }),
   items: z
-    .array(z.object({ productId: z.string().regex(/^[a-f\d]{24}$/i, 'Invalid product'), quantity: z.coerce.number().int().min(1).max(100) }))
+    .array(
+      z.object({
+        productId: z.string().regex(/^[a-f\d]{24}$/i, 'Invalid product'),
+        quantity: z.coerce.number().int().min(1, 'Quantity must be at least 1').max(100, 'At most 100 of one item per order'),
+      }),
+    )
     .min(1, 'Your bag is empty')
     .max(50),
   // Online payments are not connected yet.
@@ -29,9 +35,10 @@ export const orderListQuery = paginationQuery.extend({
   q: z.string().optional(),
   status: z.enum(ORDER_STATUSES).optional(),
   paymentStatus: z.enum(PAYMENT_STATUSES).optional(),
-  from: z.coerce.date().optional(),
-  to: z.coerce.date().optional(),
-  user: z.string().regex(/^[a-f\d]{24}$/i).optional(),
+  // Dhaka dates: "from" starts its day, "to" ends it.
+  from: storeDate('start').optional(),
+  to: storeDate('end').optional(),
+  user: z.string().regex(/^[a-f\d]{24}$/i, 'Invalid customer id').optional(),
 })
 
 export const statusUpdateSchema = z.object({

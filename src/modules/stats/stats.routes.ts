@@ -2,6 +2,9 @@ import { Router, type Request, type Response } from 'express'
 import { Types } from 'mongoose'
 import { z } from 'zod'
 import { notFound } from '@/lib/AppError'
+import { STORE_TIMEZONE, parseStoreDate } from '@/lib/dates'
+import { ok } from '@/lib/respond'
+import { objectIdParam } from '@/lib/validate'
 import { requireStaff } from '@/middlewares/auth'
 import OrderModel, { VOID_STATUSES } from '@/modules/order/order.model'
 import ProductModel from '@/modules/product/product.model'
@@ -10,11 +13,18 @@ import UserModel from '@/modules/user/user.model'
 
 const DAY_MS = 86_400_000
 // Daily buckets use Bangladesh time, so "today" matches the store's day.
-const TIMEZONE = 'Asia/Dhaka'
+const TIMEZONE = STORE_TIMEZONE
 
 const rangeQuery = z.object({ days: z.coerce.number().int().min(1).max(365).default(30) })
 
 const salesMatch = (from: Date, to: Date) => ({ createdAt: { $gte: from, $lt: to }, status: { $nin: VOID_STATUSES } })
+
+// "Last N days" means today plus the N-1 days before it, as Dhaka calendar days, so the totals cover
+// exactly the days the chart shows. Dhaka has no daylight saving, so a day is always 24 hours.
+const periodStart = (days: number, now = new Date()) => {
+  const today = new Intl.DateTimeFormat('en-CA', { timeZone: TIMEZONE }).format(now)
+  return new Date(parseStoreDate(today, 'start').getTime() - (days - 1) * DAY_MS)
+}
 
 const totalsBetween = async (from: Date, to: Date) => {
   const [row] = await OrderModel.aggregate<{ revenue: number; orders: number; units: number }>([
@@ -43,9 +53,10 @@ const dailySeries = async (match: Record<string, unknown>, days: number, unitsOn
   ])
   const byDay = new Map(rows.map((row) => [row._id, row]))
   const formatter = new Intl.DateTimeFormat('en-CA', { timeZone: TIMEZONE })
-  // Oldest first, ending with today.
+  // Oldest first, ending with today; the same days periodStart() covers.
+  const start = periodStart(days)
   return Array.from({ length: days }, (_, index) => {
-    const date = formatter.format(new Date(Date.now() - (days - 1 - index) * DAY_MS))
+    const date = formatter.format(new Date(start.getTime() + index * DAY_MS))
     const row = byDay.get(date)
     return { date, revenue: row?.revenue ?? 0, orders: row?.orders ?? 0, units: row?.units ?? 0 }
   })
@@ -54,14 +65,15 @@ const dailySeries = async (match: Record<string, unknown>, days: number, unitsOn
 const overview = async (req: Request, res: Response) => {
   const { days } = rangeQuery.parse(req.query)
   const to = new Date()
-  const from = new Date(to.getTime() - days * DAY_MS)
+  const from = periodStart(days, to)
+  // The same number of whole days just before.
   const previousFrom = new Date(from.getTime() - days * DAY_MS)
 
   const [current, previous, series, byStatus, topProducts, paymentMethods, lowStock, recentOrders, pendingOrders] = await Promise.all([
     totalsBetween(from, to),
     totalsBetween(previousFrom, from),
     dailySeries(salesMatch(from, to), days),
-    OrderModel.aggregate<{ _id: string; count: number }>([{ $match: { createdAt: { $gte: from } } }, { $group: { _id: '$status', count: { $sum: 1 } } }]),
+    OrderModel.aggregate<{ _id: string; count: number }>([{ $match: { createdAt: { $gte: from, $lt: to } } }, { $group: { _id: '$status', count: { $sum: 1 } } }]),
     OrderModel.aggregate([
       { $match: salesMatch(from, to) },
       { $unwind: '$items' },
@@ -86,20 +98,17 @@ const overview = async (req: Request, res: Response) => {
     OrderModel.countDocuments({ status: 'pending' }),
   ])
 
-  res.json({
-    success: true,
-    data: {
-      days,
-      current,
-      previous,
-      series,
-      pendingOrders,
-      ordersByStatus: Object.fromEntries(byStatus.map((row) => [row._id, row.count])),
-      topProducts: topProducts.map(({ _id, ...row }) => ({ productId: String(_id), ...row })),
-      paymentMethods: paymentMethods.map((row) => ({ method: row._id, count: row.count, amount: row.amount })),
-      lowStock,
-      recentOrders,
-    },
+  ok(res, {
+    days,
+    current,
+    previous,
+    series,
+    pendingOrders,
+    ordersByStatus: Object.fromEntries(byStatus.map((row) => [row._id, row.count])),
+    topProducts: topProducts.map(({ _id, ...row }) => ({ productId: String(_id), ...row })),
+    paymentMethods: paymentMethods.map((row) => ({ method: row._id, count: row.count, amount: row.amount })),
+    lowStock,
+    recentOrders,
   })
 }
 
@@ -107,9 +116,9 @@ const overview = async (req: Request, res: Response) => {
 const productStats = async (req: Request, res: Response) => {
   const { days } = rangeQuery.parse(req.query)
   const id = String(req.params.id)
-  if (!Types.ObjectId.isValid(id) || !(await ProductModel.exists({ _id: id }))) throw notFound('Product')
+  if (!(await ProductModel.exists({ _id: id }))) throw notFound('Product')
   const productId = new Types.ObjectId(id)
-  const from = new Date(Date.now() - days * DAY_MS)
+  const from = periodStart(days)
 
   const [lifetime] = await OrderModel.aggregate<{ units: number; revenue: number; orders: number }>([
     { $match: { 'items.product': productId, status: { $nin: VOID_STATUSES } } },
@@ -119,10 +128,7 @@ const productStats = async (req: Request, res: Response) => {
   ])
   const series = await dailySeries({ 'items.product': productId, ...salesMatch(from, new Date()) }, days, true)
 
-  res.json({
-    success: true,
-    data: { days, lifetime: { units: lifetime?.units ?? 0, revenue: lifetime?.revenue ?? 0, orders: lifetime?.orders ?? 0 }, series },
-  })
+  ok(res, { days, lifetime: { units: lifetime?.units ?? 0, revenue: lifetime?.revenue ?? 0, orders: lifetime?.orders ?? 0 }, series })
 }
 
-export const adminStatsRoutes = Router().use(requireStaff).get('/overview', overview).get('/products/:id', productStats)
+export const adminStatsRoutes = Router().param('id', objectIdParam).use(requireStaff).get('/overview', overview).get('/products/:id', productStats)

@@ -1,42 +1,53 @@
 import express from 'express'
+import compression from 'compression'
+import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import helmet from 'helmet'
-import morgan from 'morgan'
-import cookieParser from 'cookie-parser'
+import { databaseStatus } from '@/config/db'
 import { env } from '@/config/env'
-import routes from '@/routes'
-import { notFound } from '@/middlewares/notFound'
 import { errorHandler } from '@/middlewares/errorHandler'
+import { notFound } from '@/middlewares/notFound'
+import { originCheck } from '@/middlewares/originCheck'
+import { apiLimiter } from '@/middlewares/rateLimit'
+import { requestContext } from '@/middlewares/requestContext'
 import { UPLOAD_DIR } from '@/modules/upload/upload.routes'
+import routes from '@/routes'
 
 const app = express()
 
-// Behind a proxy (Render, Nginx, ...) this makes rate limiting see the real client IP.
-if (env.isProduction) app.set('trust proxy', 1)
+// Behind a proxy (Render, Nginx, ...) this makes rate limiting and logs see the real client IP.
+app.set('trust proxy', env.trustProxy)
+app.disable('x-powered-by')
 
+app.use(requestContext)
 // Uploaded images are shown by the storefront and dashboard, which run on other origins.
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }))
 app.use(
   cors({
-    // The storefront and the admin dashboard are served from different origins.
-    origin: [env.clientUrl, env.dashboardUrl],
+    origin: env.allowedOrigins,
     credentials: true,
+    exposedHeaders: ['X-Request-Id', 'RateLimit', 'RateLimit-Policy', 'Retry-After'],
   }),
 )
+app.use(compression())
 app.use(express.json({ limit: '1mb' }))
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: false, limit: '1mb' }))
 app.use(cookieParser())
 
-if (env.nodeEnv === 'development') {
-  app.use(morgan('dev'))
-}
-
+// Liveness and readiness in one: 200 when the database is reachable, 503 otherwise.
 app.get('/health', (req, res) => {
-  res.status(200).json({ success: true, message: 'Server is healthy' })
+  const database = databaseStatus()
+  const healthy = database === 'connected'
+  res.status(healthy ? 200 : 503).json({
+    success: healthy,
+    status: healthy ? 'ok' : 'degraded',
+    database,
+    uptimeSeconds: Math.round(process.uptime()),
+  })
 })
 
-app.use('/uploads', express.static(UPLOAD_DIR, { maxAge: '30d', immutable: true, index: false }))
-app.use('/api', routes)
+app.use('/uploads', express.static(UPLOAD_DIR, { maxAge: '30d', immutable: true, index: false, fallthrough: false }))
+app.use('/api', apiLimiter, originCheck, routes)
 
 app.use(notFound)
 app.use(errorHandler)

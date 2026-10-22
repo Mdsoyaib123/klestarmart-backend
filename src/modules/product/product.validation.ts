@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { optionalText } from '@/lib/phone'
+import { httpUrl, optionalText } from '@/lib/phone'
 import { paginationQuery } from '@/lib/pagination'
 import { BADGES, PRODUCT_STATUSES } from '@/modules/product/product.model'
 
@@ -16,8 +16,9 @@ export const productSchema = z
     price: money,
     compareAtPrice: money.nullable().optional(),
     category: z.string().trim().toLowerCase().min(1),
-    stock: z.coerce.number().int().min(0),
-    images: z.array(z.url()).max(10).default([]),
+    // Used when creating a product only; ignored on update (see product.service).
+    stock: z.coerce.number().int().min(0).optional(),
+    images: z.array(httpUrl()).max(10).default([]),
     badge: z.enum(BADGES).nullable().optional(),
     status: z.enum(PRODUCT_STATUSES).default('active'),
   })

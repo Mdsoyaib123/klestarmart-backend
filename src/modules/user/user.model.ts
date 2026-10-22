@@ -15,6 +15,8 @@ const userSchema = new Schema(
     role: { type: String, enum: ROLES, default: 'customer', index: true },
     status: { type: String, enum: ['active', 'blocked'], default: 'active' },
     lastLoginAt: { type: Date },
+    // Part of every session token. Bumping it (password change, reset) signs out all existing sessions.
+    sessionVersion: { type: Number, default: 0, select: false },
     defaultAddress: {
       district: String,
       upazila: String,
@@ -29,6 +31,7 @@ const userSchema = new Schema(
       transform: (_doc, ret: Record<string, unknown>) => {
         delete ret._id
         delete ret.passwordHash
+        delete ret.sessionVersion
         return ret
       },
     },

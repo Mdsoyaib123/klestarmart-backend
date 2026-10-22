@@ -1,50 +1,57 @@
 import type { Request, Response } from 'express'
-import { ADMIN_COOKIE, CUSTOMER_COOKIE, clearSession, issueSession } from '@/middlewares/auth'
 import { notFound } from '@/lib/AppError'
-import UserModel from '@/modules/user/user.model'
+import { ok, created } from '@/lib/respond'
+import { ADMIN_COOKIE, CUSTOMER_COOKIE, clearSession, issueSession } from '@/middlewares/auth'
 import * as authService from '@/modules/auth/auth.service'
+import UserModel from '@/modules/user/user.model'
 
 export const register = async (req: Request, res: Response) => {
   const user = await authService.registerCustomer(req.body)
-  issueSession(res, CUSTOMER_COOKIE, String(user._id))
-  res.status(201).json({ success: true, data: user })
+  issueSession(res, CUSTOMER_COOKIE, user)
+  created(res, user)
 }
 
 export const login = async (req: Request, res: Response) => {
   const user = await authService.loginCustomer(req.body.identifier, req.body.password)
-  issueSession(res, CUSTOMER_COOKIE, String(user._id))
-  res.json({ success: true, data: user })
+  issueSession(res, CUSTOMER_COOKIE, user)
+  ok(res, user)
 }
 
 export const logout = (req: Request, res: Response) => {
   clearSession(res, CUSTOMER_COOKIE)
-  res.json({ success: true, data: {} })
+  ok(res, null)
 }
 
 export const staffLogin = async (req: Request, res: Response) => {
   const user = await authService.loginStaff(req.body.email, req.body.password)
-  issueSession(res, ADMIN_COOKIE, String(user._id))
-  res.json({ success: true, data: user })
+  issueSession(res, ADMIN_COOKIE, user)
+  ok(res, user)
 }
 
 export const staffLogout = (req: Request, res: Response) => {
   clearSession(res, ADMIN_COOKIE)
-  res.json({ success: true, data: {} })
+  ok(res, null)
 }
 
 export const me = async (req: Request, res: Response) => {
-  const user = await authService.getProfile(req.user!.id)
-  if (!user) throw notFound('Account')
-  res.json({ success: true, data: user })
+  ok(res, await authService.getProfile(req.user!.id))
 }
 
 export const updateProfile = async (req: Request, res: Response) => {
-  const user = await UserModel.findByIdAndUpdate(req.user!.id, req.body, { returnDocument: 'after', runValidators: true })
+  const { name, email } = req.body
+  // A blank email arrives as undefined, which an update would skip; unset it so the email can be removed.
+  const changes = email ? { name, email } : { name, $unset: { email: 1 } }
+  const user = await UserModel.findByIdAndUpdate(req.user!.id, changes, { returnDocument: 'after', runValidators: true })
   if (!user) throw notFound('Account')
-  res.json({ success: true, data: user })
+  ok(res, user)
 }
 
-export const changePassword = async (req: Request, res: Response) => {
-  await authService.changePassword(req.user!.id, req.body.currentPassword, req.body.newPassword)
-  res.json({ success: true, data: {} })
+// Other devices are signed out; this one gets a fresh session so the user stays signed in here.
+const changePasswordFor = (cookie: string) => async (req: Request, res: Response) => {
+  const user = await authService.changePassword(req.user!.id, req.body.currentPassword, req.body.newPassword)
+  issueSession(res, cookie, user)
+  ok(res, null)
 }
+
+export const changeCustomerPassword = changePasswordFor(CUSTOMER_COOKIE)
+export const changeStaffPassword = changePasswordFor(ADMIN_COOKIE)

@@ -60,6 +60,8 @@ const orderSchema = new Schema(
     amountPaid: { type: Number, default: 0 },
     amountRefunded: { type: Number, default: 0 },
     status: { type: String, enum: ORDER_STATUSES, default: 'pending', index: true },
+    // Set while a status change or payment is being applied, so a second one waits its turn (see order.service).
+    lockedUntil: { type: Date, select: false },
     statusHistory: [
       {
         _id: false,
@@ -72,6 +74,9 @@ const orderSchema = new Schema(
   },
   {
     timestamps: true,
+    // Two admins saving the same order at once: the second save fails with a VersionError (409)
+    // instead of silently overwriting the first, so stock and payments are never applied twice.
+    optimisticConcurrency: true,
     toJSON: {
       virtuals: true,
       versionKey: false,
@@ -84,6 +89,8 @@ const orderSchema = new Schema(
 )
 
 orderSchema.index({ createdAt: -1 })
+// Product sales stats and the "has this product been ordered?" check look orders up by product.
+orderSchema.index({ 'items.product': 1, createdAt: -1 })
 
 export type Order = InferSchemaType<typeof orderSchema>
 export default model('Order', orderSchema)

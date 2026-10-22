@@ -22,3 +22,12 @@ export const verifyPassword = async (password: string, stored: string) => {
   const actual = await derive(password, salt)
   return expected.length === actual.length && timingSafeEqual(expected, actual)
 }
+
+// Compared against when an account does not exist, so a failed login takes the same time either way
+// and cannot reveal which emails or phone numbers are registered.
+let dummyHash: Promise<string> | undefined
+export const verifyAgainstDummy = async (password: string) => {
+  dummyHash ??= hashPassword('not-a-real-password')
+  await verifyPassword(password, await dummyHash)
+  return false
+}

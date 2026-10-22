@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { validateBody } from '@/lib/validate'
+import { objectIdParam, validateBody } from '@/lib/validate'
 import { requireStaff } from '@/middlewares/auth'
 import * as controller from '@/modules/product/product.controller'
 import { productSchema, stockAdjustSchema } from '@/modules/product/product.validation'
@@ -7,6 +7,7 @@ import { productSchema, stockAdjustSchema } from '@/modules/product/product.vali
 export const publicProductRoutes = Router().get('/', controller.listPublic).get('/:idOrSlug', controller.getPublic)
 
 export const adminProductRoutes = Router()
+  .param('id', objectIdParam)
   .use(requireStaff)
   .get('/', controller.listAdmin)
   .post('/', validateBody(productSchema), controller.create)

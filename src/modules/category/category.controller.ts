@@ -1,11 +1,11 @@
 import type { Request, Response } from 'express'
-import { AppError, notFound } from '@/lib/AppError'
+import { conflict, notFound } from '@/lib/AppError'
+import { created, ok } from '@/lib/respond'
 import CategoryModel from '@/modules/category/category.model'
 import ProductModel from '@/modules/product/product.model'
 
 export const listPublic = async (req: Request, res: Response) => {
-  const categories = await CategoryModel.find({ isActive: true }).sort({ sortOrder: 1, name: 1 })
-  res.json({ success: true, data: categories })
+  ok(res, await CategoryModel.find({ isActive: true }).sort({ sortOrder: 1, name: 1 }))
 }
 
 // Admin list, with how many products use each category.
@@ -15,15 +15,14 @@ export const listAdmin = async (req: Request, res: Response) => {
     ProductModel.aggregate<{ _id: string; count: number }>([{ $group: { _id: '$category', count: { $sum: 1 } } }]),
   ])
   const byCategory = new Map(counts.map((row) => [row._id, row.count]))
-  res.json({
-    success: true,
-    data: categories.map((category) => ({ ...category.toJSON(), productCount: byCategory.get(category.slug) ?? 0 })),
-  })
+  ok(
+    res,
+    categories.map((category) => ({ ...category.toJSON(), productCount: byCategory.get(category.slug) ?? 0 })),
+  )
 }
 
 export const create = async (req: Request, res: Response) => {
-  const category = await CategoryModel.create(req.body)
-  res.status(201).json({ success: true, data: category })
+  created(res, await CategoryModel.create(req.body))
 }
 
 export const update = async (req: Request, res: Response) => {
@@ -36,14 +35,16 @@ export const update = async (req: Request, res: Response) => {
   if (previousSlug !== category.slug) {
     await ProductModel.updateMany({ category: previousSlug }, { category: category.slug })
   }
-  res.json({ success: true, data: category })
+  ok(res, category)
 }
 
 export const remove = async (req: Request, res: Response) => {
   const category = await CategoryModel.findById(req.params.id)
   if (!category) throw notFound('Category')
   const inUse = await ProductModel.countDocuments({ category: category.slug })
-  if (inUse > 0) throw new AppError(409, `This category still has ${inUse} product(s). Move or delete them first.`)
+  if (inUse > 0) {
+    throw conflict(`This category still has ${inUse} product(s). Move or delete them first.`, { details: { productCount: inUse } })
+  }
   await category.deleteOne()
-  res.json({ success: true, data: {} })
+  ok(res, null)
 }

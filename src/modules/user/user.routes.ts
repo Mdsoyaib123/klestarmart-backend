@@ -1,10 +1,11 @@
 import { Router, type Request, type Response } from 'express'
 import { Types } from 'mongoose'
 import { z } from 'zod'
-import { AppError, notFound } from '@/lib/AppError'
+import { conflict, forbidden, notFound } from '@/lib/AppError'
 import { pageMeta, paginationQuery, searchRegex } from '@/lib/pagination'
 import { hashPassword } from '@/lib/password'
-import { validateBody } from '@/lib/validate'
+import { created, ok } from '@/lib/respond'
+import { objectIdParam, validateBody } from '@/lib/validate'
 import { requireAdmin, requireStaff } from '@/middlewares/auth'
 import { passwordSchema } from '@/modules/auth/auth.validation'
 import OrderModel, { VOID_STATUSES } from '@/modules/order/order.model'
@@ -60,9 +61,9 @@ const listCustomers = async (req: Request, res: Response) => {
   ])
   const totals = await orderTotals(users.map((user) => user._id))
 
-  res.json({
-    success: true,
-    data: users.map((user) => {
+  ok(
+    res,
+    users.map((user) => {
       const stats = totals.get(String(user._id))
       return {
         ...user.toJSON(),
@@ -72,60 +73,74 @@ const listCustomers = async (req: Request, res: Response) => {
         lastOrderAt: stats?.lastOrderAt,
       }
     }),
-    meta: pageMeta(query.page, query.limit, total),
-  })
+    { meta: pageMeta(query.page, query.limit, total) },
+  )
 }
 
 const getCustomer = async (req: Request, res: Response) => {
   const user = await UserModel.findOne({ _id: req.params.id, role: 'customer' }).select('+passwordHash')
   if (!user) throw notFound('Customer')
   const stats = (await orderTotals([user._id])).get(String(user._id))
-  res.json({
-    success: true,
-    data: { ...user.toJSON(), registered: Boolean(user.passwordHash), orderCount: stats?.orders ?? 0, totalSpent: stats?.spent ?? 0, lastOrderAt: stats?.lastOrderAt },
+  ok(res, {
+    ...user.toJSON(),
+    registered: Boolean(user.passwordHash),
+    orderCount: stats?.orders ?? 0,
+    totalSpent: stats?.spent ?? 0,
+    lastOrderAt: stats?.lastOrderAt,
   })
 }
 
 const setCustomerStatus = async (req: Request, res: Response) => {
   const user = await UserModel.findOneAndUpdate({ _id: req.params.id, role: 'customer' }, { status: req.body.status }, { returnDocument: 'after' })
   if (!user) throw notFound('Customer')
-  res.json({ success: true, data: user })
+  ok(res, user)
 }
 
 const listStaff = async (req: Request, res: Response) => {
-  res.json({ success: true, data: await UserModel.find({ role: { $in: ['staff', 'admin'] } }).sort({ createdAt: 1 }) })
+  ok(res, await UserModel.find({ role: { $in: ['staff', 'admin'] } }).sort({ createdAt: 1 }))
 }
 
 const createStaff = async (req: Request, res: Response) => {
   const { password, ...rest } = req.body
   const user = await UserModel.create({ ...rest, passwordHash: await hashPassword(password) })
-  res.status(201).json({ success: true, data: user })
+  created(res, user)
 }
 
 const updateStaff = async (req: Request, res: Response) => {
-  const user = await UserModel.findOne({ _id: req.params.id, role: { $in: ['staff', 'admin'] } })
+  const user = await UserModel.findOne({ _id: req.params.id, role: { $in: ['staff', 'admin'] } }).select('+sessionVersion')
   if (!user) throw notFound('Team member')
   const { password, ...changes } = req.body
+
+  // Admins cannot lock themselves out by accident; another admin has to do it.
+  if (String(user._id) === req.user!.id && (changes.role !== user.role || changes.status !== 'active')) {
+    throw forbidden('You cannot change your own role or deactivate your own account. Ask another admin.')
+  }
 
   // Never leave the store without an active admin.
   const losesAdmin = user.role === 'admin' && (changes.role !== 'admin' || changes.status !== 'active')
   if (losesAdmin && (await UserModel.countDocuments({ role: 'admin', status: 'active', _id: { $ne: user._id } })) === 0) {
-    throw new AppError(400, 'You need at least one active admin.')
+    throw conflict('You need at least one active admin.')
   }
 
   user.set(changes)
-  if (password) user.passwordHash = await hashPassword(password)
+  if (password) {
+    user.passwordHash = await hashPassword(password)
+    // A new password signs the member out everywhere.
+    user.sessionVersion = (user.sessionVersion ?? 0) + 1
+  }
   await user.save()
-  res.json({ success: true, data: user })
+  ok(res, user)
 }
 
 export const adminCustomerRoutes = Router()
+  .param('id', objectIdParam)
   .use(requireStaff)
   .get('/', listCustomers)
   .get('/:id', getCustomer)
   .patch('/:id/status', validateBody(statusSchema), setCustomerStatus)
 
 export const adminStaffRoutes = Router()
+  .param('id', objectIdParam)
   .use(requireStaff, requireAdmin)
   .get('/', listStaff)
   .post('/', validateBody(staffCreateSchema), createStaff)

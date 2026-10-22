@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction, CookieOptions } from 'express'
 import jwt from 'jsonwebtoken'
 import { env } from '@/config/env'
-import { AppError } from '@/lib/AppError'
+import { forbidden, unauthorized } from '@/lib/AppError'
 import UserModel, { type Role } from '@/modules/user/user.model'
 
 // Separate cookies so a customer session on the storefront never grants dashboard access.
@@ -16,8 +16,15 @@ const cookieOptions = (): CookieOptions => ({
   maxAge: env.sessionDays * 24 * 60 * 60 * 1000,
 })
 
-export const issueSession = (res: Response, cookie: string, userId: string) => {
-  const token = jwt.sign({ sub: userId }, env.jwtSecret, { expiresIn: `${env.sessionDays}d` })
+interface SessionToken {
+  sub: string
+  // The user's sessionVersion when the token was issued.
+  v: number
+}
+
+export const issueSession = (res: Response, cookie: string, user: { _id: unknown; sessionVersion?: number | null }) => {
+  const payload: SessionToken = { sub: String(user._id), v: user.sessionVersion ?? 0 }
+  const token = jwt.sign(payload, env.jwtSecret, { expiresIn: `${env.sessionDays}d`, algorithm: 'HS256' })
   res.cookie(cookie, token, cookieOptions())
 }
 
@@ -29,16 +36,19 @@ export const clearSession = (res: Response, cookie: string) => {
 const readUser = async (req: Request, cookie: string) => {
   const token = req.cookies?.[cookie]
   if (typeof token !== 'string') return null
+  let payload: SessionToken
   try {
-    const payload = jwt.verify(token, env.jwtSecret)
-    if (typeof payload === 'string' || !payload.sub) return null
-    // Looked up on every request so blocking a user or changing a role takes effect immediately.
-    const user = await UserModel.findById(payload.sub).select('name role status').lean()
-    if (!user || user.status !== 'active') return null
-    return { id: String(user._id), name: user.name, role: user.role as Role }
+    const decoded = jwt.verify(token, env.jwtSecret, { algorithms: ['HS256'] })
+    if (typeof decoded === 'string' || typeof decoded.sub !== 'string') return null
+    payload = { sub: decoded.sub, v: typeof decoded.v === 'number' ? decoded.v : 0 }
   } catch {
+    // Expired, tampered with, or signed with an old secret: treat as signed out.
     return null
   }
+  // Looked up on every request so blocking a user, changing a role or a password takes effect immediately.
+  const user = await UserModel.findById(payload.sub).select('name role status +sessionVersion').lean()
+  if (!user || user.status !== 'active' || (user.sessionVersion ?? 0) !== payload.v) return null
+  return { id: String(user._id), name: user.name, role: user.role as Role }
 }
 
 const authenticate =
@@ -48,7 +58,9 @@ const authenticate =
     if (user && roles.includes(user.role)) {
       req.user = user
     } else if (!optional) {
-      throw new AppError(401, 'Please sign in to continue')
+      // A stale cookie is removed so the browser stops sending it.
+      if (req.cookies?.[cookie]) clearSession(res, cookie)
+      throw unauthorized()
     }
     next()
   }
@@ -59,6 +71,6 @@ export const optionalCustomer = authenticate(CUSTOMER_COOKIE, ['customer'], true
 
 // Use after requireStaff to restrict a route to admins.
 export const requireAdmin = (req: Request, res: Response, next: NextFunction) => {
-  if (req.user?.role !== 'admin') throw new AppError(403, 'Only admins can do this')
+  if (req.user?.role !== 'admin') throw forbidden('Only admins can do this')
   next()
 }

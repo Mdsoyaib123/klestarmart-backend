@@ -1,7 +1,6 @@
 import type { Request, Response, NextFunction } from 'express'
+import { AppError } from '@/lib/AppError'
 
 export const notFound = (req: Request, res: Response, next: NextFunction) => {
-  const error = new Error(`Not Found - ${req.originalUrl}`)
-  res.status(404)
-  next(error)
+  next(new AppError(404, `No route for ${req.method} ${req.path}`, { code: 'ROUTE_NOT_FOUND' }))
 }
